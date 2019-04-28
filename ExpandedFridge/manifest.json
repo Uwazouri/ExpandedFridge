@@ -5,6 +5,6 @@
   "Description": "Simply more inventory space in the fridge.",
   "UniqueID": "Uwazouri.ExpandedFridge",
   "EntryDll": "ExpandedFridge.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "2.2.0",
   "UpdateKeys": [ "Nexus:1191" ]
 }

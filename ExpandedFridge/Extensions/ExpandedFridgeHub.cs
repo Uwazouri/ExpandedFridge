@@ -458,13 +458,13 @@ namespace ExpandedFridge
         /// Accepts input for activating remote access to the fridge.
         private void RemoteFridgeOnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button == ModEntry.RemoteButton)
-            {
-                if (Game1.activeClickableMenu != null || Game1.eventUp || Game1.dialogueUp)
-                    return;
-                RemoteFridgeAccess();
-            }
-            else if (this.remoteButtonDraw && e.Button == StardewModdingAPI.SButton.MouseLeft && this.remoteButton != null)
+            //if (e.Button == ModEntry.RemoteButton)
+            //{
+            //    if (Game1.activeClickableMenu != null || Game1.eventUp || Game1.dialogueUp)
+            //        return;
+            //    RemoteFridgeAccess();
+            //}
+            if (this.remoteButtonDraw && e.Button == StardewModdingAPI.SButton.MouseLeft && this.remoteButton != null)
             {
                 if ((Game1.activeClickableMenu as GameMenu).currentTab == 0 && this.remoteButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     RemoteFridgeAccess();

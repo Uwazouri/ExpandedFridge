@@ -1,2 +1,2 @@
 # ExpandedFridge
-A quick restoration project of my old Stardew Valley SMAPI Mod Expanded Fridge.
+A quick replacement project for my old Stardew Valley SMAPI Mod Expanded Fridge.
