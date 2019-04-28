@@ -49,8 +49,11 @@ namespace ExpandedFridge
         /// Callback function on day ended. We cleanup from the expanded fridge so when the game is saved all data is safe.
         private void OnDayEnded(object sender, DayEndingEventArgs e)
         {
-            this.expandedFridgeHub.CleanupForRelease();
-            this.expandedFridgeHub = null;
+            if (this.expandedFridgeHub != null)
+            {
+                this.expandedFridgeHub.CleanupForRelease();
+                this.expandedFridgeHub = null;
+            }
         }
     }
 }
