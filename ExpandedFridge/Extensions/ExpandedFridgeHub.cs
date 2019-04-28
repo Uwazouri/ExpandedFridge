@@ -754,7 +754,7 @@ namespace ExpandedFridge
             newChest.chestType.Value = MAGIC + ":" + markNumber.ToString();
             newChest.fridge.Value = true;
 
-            ModEntry.MonitorInstance.Log("Created new chest in our location: " + newChest.chestType.Value);
+            //ModEntry.MonitorInstance.Log("Created new chest in our location: " + newChest.chestType.Value);
 
             // find open tile for chest
             Vector2 freeTile = GetFreeTileInLocation();
