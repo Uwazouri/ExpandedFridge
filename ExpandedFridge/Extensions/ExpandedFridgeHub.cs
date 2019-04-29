@@ -64,8 +64,11 @@ namespace ExpandedFridge
         /// Is the chest opened remotely
         public bool         remoteOpen { get; private set; }
 
-        /// Should we try to draw the remote button
+        /// Should we try to draw the remote button.
         private bool        remoteButtonDraw = false;
+
+        /// Optional player check if remote button should be active.
+        private bool        remoteButtonActive = true;
 
 
         /// OVERT from Chest: we use our own lid frame variable for more controll of chest opening and closing.
@@ -426,6 +429,9 @@ namespace ExpandedFridge
         /// Activates drawing of remote button if menu is game menu.
         private void RemoteFridgeOnMenuChanged(object sender, MenuChangedEventArgs e)
         {
+            if (!this.remoteButtonActive)
+                return;
+
             if (e.NewMenu is GameMenu)
             {
                 if (!this.remoteButtonDraw)
@@ -448,6 +454,9 @@ namespace ExpandedFridge
         /// Draws the remote access button if it should be drawn.
         private void RemoteFridgeOnRenderedMenu(object sender, RenderedActiveMenuEventArgs e)
         {
+            if (!this.remoteButtonActive)
+                return;
+
             if (this.remoteButtonDraw && this.remoteButton != null)
             {
                 if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).currentTab == 0)
@@ -464,6 +473,10 @@ namespace ExpandedFridge
             //        return;
             //    RemoteFridgeAccess();
             //}
+
+            if (!this.remoteButtonActive)
+                return;
+
             if (this.remoteButtonDraw && e.Button == StardewModdingAPI.SButton.MouseLeft && this.remoteButton != null)
             {
                 if ((Game1.activeClickableMenu as GameMenu).currentTab == 0 && this.remoteButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
@@ -484,6 +497,10 @@ namespace ExpandedFridge
             List<Response> responseList = new List<Response>();
             responseList.Add(new Response("Phone", "(Pick up the phone)"));
             responseList.Add(new Response("Note", "(Look at the notepad)"));
+            if (this.remoteButtonActive)
+                responseList.Add(new Response("Remote", "(Deactivate remote button)"));
+            else
+                responseList.Add(new Response("Remote", "(Activate remote button)"));
             responseList.Add(new Response("Leave", "(Leave)"));
             Game1.currentLocation.createQuestionDialogue("There is a phone on the side of the fridge and a notepad...", responseList.ToArray(), this.LookAnswer, (NPC)null);
             Game1.player.Halt();
@@ -501,6 +518,11 @@ namespace ExpandedFridge
             {
                 Game1.drawObjectDialogue("*SHUFFLE* 'The text seem hastily written...'");
                 Game1.afterDialogues = new Game1.afterFadeFunction(this.LookAtNote);
+            }
+            else if (answer.Equals("Remote"))
+            {
+                this.remoteButtonActive = !this.remoteButtonActive;
+                Game1.drawObjectDialogue("*CLICK*");
             }
         }
 
