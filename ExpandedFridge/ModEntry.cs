@@ -23,7 +23,7 @@ namespace ExpandedFridge
         public override void Entry(IModHelper helper)
         {
             RemoteButton = SButton.R;
-            FridgeTexture = helper.Content.Load<Texture2D>("Assets/fridge2.png", ContentSource.ModFolder);
+            FridgeTexture = helper.Content.Load<Texture2D>("Assets/fridge3.png", ContentSource.ModFolder);
             HelperInstance = Helper;
             MonitorInstance = Monitor;
             cheatStorage = ModEntry.HelperInstance.ReadConfig<ModConfig>().cheatStorage;

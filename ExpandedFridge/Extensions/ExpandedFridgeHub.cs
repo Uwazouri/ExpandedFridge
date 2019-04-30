@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -54,6 +55,9 @@ namespace ExpandedFridge
 
         /// For rendering the remote access button.
         private ClickableTextureComponent remoteButton;
+
+        /// For rendering the remote access button.
+        private ClickableTextureComponent remoteButtonTab;
 
 
         /// Are the references in the infinite storage set to the contents of the connected chests.
@@ -159,6 +163,23 @@ namespace ExpandedFridge
 
                 // set selected chest
                 this.selectedChest = this.connectedChests[0];
+
+                // setup button clickable texture
+                const int fbscale = 2;
+                this.remoteButton = new ClickableTextureComponent(
+                    new Rectangle(0, 0, ModEntry.FridgeTexture.Width*fbscale, ModEntry.FridgeTexture.Height * fbscale),
+                    ModEntry.FridgeTexture,
+                    new Rectangle(0, 0, ModEntry.FridgeTexture.Width, ModEntry.FridgeTexture.Height),
+                    fbscale,
+                    false);
+
+                // setup button clickable texture
+                this.remoteButtonTab = new ClickableTextureComponent(
+                    new Rectangle(0, 0, 64, 64),
+                    Game1.mouseCursors,
+                    new Rectangle(16, 368, 16, 16),
+                    4f,
+                    false);
 
                 // setup references in infinite storage
                 FillReferences();
@@ -422,7 +443,7 @@ namespace ExpandedFridge
         /// Updates the fridge remotely if there are nobody in the location.
         private void RemoteFridgeUpdate(object sender, OneSecondUpdateTickingEventArgs e)
         {
-            if (this.location.farmers.Count <= 0)
+            if (this.location.farmers.Count <= 0 && Game1.currentLocation != null)
                 this.mutex.Update(Game1.currentLocation);
         }
 
@@ -432,16 +453,15 @@ namespace ExpandedFridge
             if (!this.remoteButtonActive)
                 return;
 
-            if (e.NewMenu is GameMenu)
+            if (e.NewMenu is GameMenu menu)
             {
+                Game1.showGlobalMessage("New GameMenu");
                 if (!this.remoteButtonDraw)
                 {
-                    this.remoteButton = new ClickableTextureComponent(
-                        new Rectangle(e.NewMenu.xPositionOnScreen - 64, e.NewMenu.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + 16, ModEntry.FridgeTexture.Width*4, ModEntry.FridgeTexture.Height*4),
-                        ModEntry.FridgeTexture,
-                        new Rectangle(0, 0, ModEntry.FridgeTexture.Width, ModEntry.FridgeTexture.Height),
-                        4f,
-                        false);
+                    this.remoteButtonTab.bounds.X = menu.xPositionOnScreen+64;
+                    this.remoteButtonTab.bounds.Y = menu.yPositionOnScreen-40;
+                    this.remoteButton.bounds.X = this.remoteButtonTab.bounds.X+16;
+                    this.remoteButton.bounds.Y = this.remoteButtonTab.bounds.Y+16;
 
                     if (ModEntry.cheatUpgrades || this.upgradeModules.Contains(upgradeWarp.ToString()) || this.upgradeModules.Contains(upgradePortal.ToString()) || this.upgradeModules.Contains(upgradeDimension.ToString()))
                         this.remoteButtonDraw = true;
@@ -457,10 +477,25 @@ namespace ExpandedFridge
             if (!this.remoteButtonActive)
                 return;
 
-            if (this.remoteButtonDraw && this.remoteButton != null)
+            if (this.remoteButtonDraw)
             {
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).currentTab == 0)
+                if (Game1.activeClickableMenu is GameMenu menu && menu.currentTab != 3) // dont render if map page
+                {
+                    if (menu.currentTab == 0)
+                    {
+                        this.remoteButtonTab.bounds.Y = menu.yPositionOnScreen - 32;
+                        this.remoteButton.bounds.Y = this.remoteButtonTab.bounds.Y + 20;
+                    }
+                    else
+                    {
+                        this.remoteButtonTab.bounds.Y = menu.yPositionOnScreen - 40;
+                        this.remoteButton.bounds.Y = this.remoteButtonTab.bounds.Y + 20;
+                    }
+
+                    this.remoteButtonTab.draw(e.SpriteBatch);
                     this.remoteButton.draw(e.SpriteBatch);
+                }
+                    
             }
         }
 
@@ -477,9 +512,9 @@ namespace ExpandedFridge
             if (!this.remoteButtonActive)
                 return;
 
-            if (this.remoteButtonDraw && e.Button == StardewModdingAPI.SButton.MouseLeft && this.remoteButton != null)
+            if (this.remoteButtonDraw && e.Button == StardewModdingAPI.SButton.MouseLeft)
             {
-                if ((Game1.activeClickableMenu as GameMenu).currentTab == 0 && this.remoteButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                if (this.remoteButtonTab.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     RemoteFridgeAccess();
             }
         }
