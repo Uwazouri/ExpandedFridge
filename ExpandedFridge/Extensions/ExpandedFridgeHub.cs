@@ -434,6 +434,25 @@ namespace ExpandedFridge
             }), (Action)null);
         }
 
+        private bool CanRemoteOpenInCurrentLocation()
+        {
+            if (this.location.upgradeLevel <= 0)
+                return false;
+
+            if (ModEntry.cheatUpgrades || this.upgradeModules.Contains(upgradeDimension.ToString()))
+                return true;
+            else if (this.upgradeModules.Contains(upgradePortal.ToString()))
+            {
+                if (!(Game1.currentLocation is MineShaft))
+                    return true;
+            }
+            else if (this.upgradeModules.Contains(upgradeWarp.ToString()))
+            {
+                if (Game1.currentLocation is FarmHouse || Game1.currentLocation == Game1.getLocationFromName("Farm"))
+                    return true;
+            }
+            return false;
+        }
 
 
         /// **************************************************************************************************************************************************
@@ -455,7 +474,6 @@ namespace ExpandedFridge
 
             if (e.NewMenu is GameMenu menu)
             {
-                Game1.showGlobalMessage("New GameMenu");
                 if (!this.remoteButtonDraw)
                 {
                     this.remoteButtonTab.bounds.X = menu.xPositionOnScreen+64;
@@ -479,7 +497,7 @@ namespace ExpandedFridge
 
             if (this.remoteButtonDraw)
             {
-                if (Game1.activeClickableMenu is GameMenu menu && menu.currentTab != 3) // dont render if map page
+                if (Game1.activeClickableMenu is GameMenu menu && menu.currentTab != 3 && CanRemoteOpenInCurrentLocation())
                 {
                     if (menu.currentTab == 0)
                     {
@@ -528,7 +546,6 @@ namespace ExpandedFridge
         /// Initial access to the fridge 'menu'.
         private void LookAt()
         {
-            Game1.showGlobalMessage("LookAt!");
             List<Response> responseList = new List<Response>();
             responseList.Add(new Response("Phone", "(Pick up the phone)"));
             responseList.Add(new Response("Note", "(Look at the notepad)"));
