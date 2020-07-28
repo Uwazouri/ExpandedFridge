@@ -1,10 +1,10 @@
 {
   "Name": "ExpandedFridge",
   "Author": "Uwazouri",
-  "Version": "2.0.2",
-  "Description": "Simply more inventory space in the fridge.",
+  "Version": "3.0.0",
+  "Description": "Hide mini fridges and access them from the house fridge.",
   "UniqueID": "Uwazouri.ExpandedFridge",
   "EntryDll": "ExpandedFridge.dll",
-  "MinimumApiVersion": "2.2.0",
+  "MinimumApiVersion": "3.1.0",
   "UpdateKeys": [ "Nexus:1191" ]
 }
