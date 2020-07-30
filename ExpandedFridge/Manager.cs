@@ -103,10 +103,7 @@ namespace ExpandedFridge
 
         /// Cached bool for tracking initiation of custom menu.
         private bool _customMenuInitiated = false;
-
-        /// Multi mutex reference to mini fridges managed.
-        private MultiMutexRequest _multiMutexRequest = null;
-
+        
         /// The menu displaying the custom fridge inventory behaviour.
         private ItemGrabMenu _menu = null;
 
@@ -125,9 +122,13 @@ namespace ExpandedFridge
                 _entry.Helper.Events.Display.RenderingActiveMenu -= DrawBeforeActiveMenu;
                 _entry.Helper.Events.Input.ButtonPressed -= RecieveButtonPressed;
                 _entry.Helper.Events.Input.MouseWheelScrolled -= RecieveMouseWheelScrolled;
+
+                // release mutex if mini fridge selected
+                if (_selectedTab > 0 && _selectedTab < _fridges.Count)
+                    _fridges[_selectedTab].mutex.ReleaseLock();
+                
                 _menu = null;
                 _fridges.Clear();
-                _multiMutexRequest.ReleaseLocks();
                 ClearCustomComponents();
                 _customMenuInitiated = false;
             }
@@ -140,27 +141,15 @@ namespace ExpandedFridge
             // get multimutex from mini friges
             var farmHouse = Utilities.CurrentLocation as FarmHouse;
             var miniFridges = Utilities.GetAllMiniFridgesInLocation(farmHouse);
-            List<NetMutex> mutexes = new List<NetMutex>();
-            foreach (var c in miniFridges)
-                mutexes.Add(c.mutex);
-            
-            // activate custom fridge menu only if our mutex request is accepted
-            _multiMutexRequest = new MultiMutexRequest(mutexes,
-                () =>
-                {
-                    _menu = menu;
-                    _fridges.Add(farmHouse.fridge);
-                    _fridges.AddRange(miniFridges);
-                    _entry.Helper.Events.Display.RenderingActiveMenu += DrawBeforeActiveMenu;
-                    _entry.Helper.Events.Input.ButtonPressed += RecieveButtonPressed;
-                    _entry.Helper.Events.Input.MouseWheelScrolled += RecieveMouseWheelScrolled;
-                    UpdateCustomComponents();
-                    _customMenuInitiated = true;
-                },
-                () =>
-                {
-                    Game1.showRedMessage("One or more Mini Fridges are in use, showing normal fridge.");
-                });
+
+            _menu = menu;
+            _fridges.Add(farmHouse.fridge);
+            _fridges.AddRange(miniFridges);
+            _entry.Helper.Events.Display.RenderingActiveMenu += DrawBeforeActiveMenu;
+            _entry.Helper.Events.Input.ButtonPressed += RecieveButtonPressed;
+            _entry.Helper.Events.Input.MouseWheelScrolled += RecieveMouseWheelScrolled;
+            UpdateCustomComponents();
+            _customMenuInitiated = true;
 
             ModEntry.DebugLog("Fridge opened");
         }
@@ -214,7 +203,7 @@ namespace ExpandedFridge
             }
 
             // left right arrow components for scrolling
-            _rightArrowButton = new ClickableTextureComponent(new Rectangle(labelX + 12 * Game1.tileSize, labelY + 24, 48, 44), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false);
+            _rightArrowButton = new ClickableTextureComponent(new Rectangle(labelX + 12 + 12 * Game1.tileSize, labelY + 24, 48, 44), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false);
             _leftArrowButton = new ClickableTextureComponent(new Rectangle(labelX + -Game1.tileSize, labelY + 24, 48, 44), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f, false);
         }
 
@@ -264,14 +253,43 @@ namespace ExpandedFridge
         {
             if (tab >= 0 && tab < _fridges.Count && tab != _selectedTab)
             {
-                _selectedTab = tab;
-                if (tab > 0)
-                    _menu = Utilities.GetNewItemGrabMenuFromChest(_fridges[tab], true);
-                else
-                    _menu = Utilities.GetNewItemGrabMenuFromChest(_fridges[tab], false);
+                if (tab == 0)
+                {
+                    // release mutex if mini fridge selected
+                    if (_selectedTab > 0 && _selectedTab < _fridges.Count)
+                        _fridges[_selectedTab].mutex.ReleaseLock();
 
-                Game1.activeClickableMenu = _menu;
-                Game1.playSound("smallSelect");
+                    _selectedTab = tab;
+                    if (tab > 0)
+                        _menu = Utilities.GetNewItemGrabMenuFromChest(_fridges[tab], true);
+                    else
+                        _menu = Utilities.GetNewItemGrabMenuFromChest(_fridges[tab], false);
+
+                    Game1.activeClickableMenu = _menu;
+                    Game1.playSound("smallSelect");
+                }
+                else
+                {
+                    // request mini fridge to be opened
+                    _fridges[tab].mutex.RequestLock(() =>
+                    {
+                        // release mutex if mini fridge selected
+                        if (_selectedTab > 0 && _selectedTab < _fridges.Count)
+                            _fridges[_selectedTab].mutex.ReleaseLock();
+
+                        _selectedTab = tab;
+                        if (tab > 0)
+                            _menu = Utilities.GetNewItemGrabMenuFromChest(_fridges[tab], true);
+                        else
+                            _menu = Utilities.GetNewItemGrabMenuFromChest(_fridges[tab], false);
+
+                        Game1.activeClickableMenu = _menu;
+                        Game1.playSound("smallSelect");
+                    }, () =>
+                    {
+                        Game1.playSound("cancel");
+                    });
+                }
             }
         }
 
