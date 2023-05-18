@@ -1,7 +1,7 @@
 {
   "Name": "ExpandedFridge",
   "Author": "Uwazouri",
-  "Version": "3.0.2",
+  "Version": "3.0.3-unofficial.1-GangrusS",
   "Description": "Hide mini fridges and access them from the house fridge.",
   "UniqueID": "Uwazouri.ExpandedFridge",
   "EntryDll": "ExpandedFridge.dll",

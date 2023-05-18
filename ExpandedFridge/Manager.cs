@@ -301,7 +301,7 @@ namespace ExpandedFridge
             // never allow an ItemGrabMenu to render its background while we are drawing FridgeMenu, it will do it instead.
             if (igm != null && igm.drawBG)
                 igm.drawBG = false;
-            e.SpriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f);
+            e.SpriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
 
             // if flagged, update tabs colors
             if (_updateTabColors)
@@ -361,7 +361,7 @@ namespace ExpandedFridge
         {
             if (e.Button == SButton.MouseLeft)
             {
-                Point mouse = new Point(Game1.getMouseX(), Game1.getMouseY());
+                Point mouse = new Point(Game1.getMouseX(true), Game1.getMouseY(true));
 
                 int i = 1;
                 for (int index = _rootTab; index < _fridgeTabs.Count && i++ <= 12; index++)
