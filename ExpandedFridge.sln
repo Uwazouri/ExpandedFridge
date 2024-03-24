@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpandedFridge", "ExpandedFridge\ExpandedFridge.csproj", "{19FBEC0E-3F43-4E70-9C0A-02DFB0340642}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpandedFridge", "ExpandedFridge\ExpandedFridge.csproj", "{5416EB28-A9A6-4105-A6C0-78753709D0AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{19FBEC0E-3F43-4E70-9C0A-02DFB0340642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19FBEC0E-3F43-4E70-9C0A-02DFB0340642}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19FBEC0E-3F43-4E70-9C0A-02DFB0340642}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19FBEC0E-3F43-4E70-9C0A-02DFB0340642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5416EB28-A9A6-4105-A6C0-78753709D0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5416EB28-A9A6-4105-A6C0-78753709D0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5416EB28-A9A6-4105-A6C0-78753709D0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5416EB28-A9A6-4105-A6C0-78753709D0AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {550EC230-AB3A-4AB2-8A6F-1B0B2EA14CF8}
+		SolutionGuid = {0E22BECD-9414-4C18-BE2D-4DAB153EAA78}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ppYb1D+TT4JRfKFTt7oO6s2KNOKoc8r58SYmgVcQjOUTSxHToGA3ZAE2+OuM1+dDCPyB7GZABExxWPqA613FBw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\jsl_s\\Desktop\\ExpandedFridge2\\ExpandedFridge\\ExpandedFridge\\ExpandedFridge.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jsl_s\\.nuget\\packages\\pathoschild.stardew.modbuildconfig\\4.1.1\\pathoschild.stardew.modbuildconfig.4.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}

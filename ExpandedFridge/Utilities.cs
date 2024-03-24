@@ -18,13 +18,14 @@ namespace ExpandedFridge
     {
         /// Sheet index for mini fridges.
         public const int MiniFridgeSheetIndex = 216;
+        public const string MiniFridgeQualifiedItemID = "(BC)216";
 
         /// Start tile for placement out of bounds.
         public const int OutOfBoundsTileY = -300;
 
         /// Wrapper for getting players current location.
         public static GameLocation CurrentLocation { get { return Game1.player.currentLocation; } }
-        
+
         /// Checks if a location has a fridge.
         public static bool IsFridgeInLocation(GameLocation location)
         {
@@ -46,7 +47,7 @@ namespace ExpandedFridge
         /// Is given object a mini fridge.
         public static bool IsObjectMiniFridge(StardewValley.Object obj)
         {
-            return (obj != null && obj.bigCraftable.Value && (obj is Chest && obj.ParentSheetIndex == MiniFridgeSheetIndex));
+            return (obj != null && obj.QualifiedItemId == MiniFridgeQualifiedItemID);
         }
 
         /// Get an array of all locations that have fridges.
@@ -55,7 +56,7 @@ namespace ExpandedFridge
         public static FarmHouse[] GetAllFridgeHouses()
         {
             List<FarmHouse> fridgeLocations = new List<FarmHouse>();
-            
+
             foreach (var location in Game1.locations)
             {
                 if (IsFridgeInLocation(location))
@@ -74,7 +75,7 @@ namespace ExpandedFridge
 
             return fridgeLocations.ToArray();
         }
-        
+
         /// Get an array of mini fridge chests that exists in given location. They are sorted by their tile coordinates with Y as higher priority.
         public static Chest[] GetAllMiniFridgesInLocation(GameLocation location)
         {
@@ -92,7 +93,7 @@ namespace ExpandedFridge
 
             return miniFridges.ToArray();
         }
-        
+
         /// Get a free tile for chest placement in a location.
         /// NOTE: This can return a value outside the map bounds.
         public static Point GetFreeTileInLocation(GameLocation location)
@@ -100,7 +101,8 @@ namespace ExpandedFridge
             for (int h = 0; h <= location.map.Layers[0].LayerHeight; h++)//(int h = location.map.Layers[0].LayerHeight; h >= 0; h--)
                 for (int w = 0; w <= location.map.Layers[0].LayerWidth; w++)
                     // check if tile in width and height is placeable and not on wall
-                    if (location.isTileLocationTotallyClearAndPlaceable(w, h) && (!(location is DecoratableLocation) || !(location as DecoratableLocation).isTileOnWall(w, h)))
+                    //if (location.isTileLocationTotallyClearAndPlaceable(w, h) && (!(location is DecoratableLocation) || !(location as DecoratableLocation).isTileOnWall(w, h)))
+                    if (!location.IsTileBlockedBy(new Vector2(w, h)))
                         return new Point(w, h);
 
             int y = 0;
@@ -126,7 +128,7 @@ namespace ExpandedFridge
         /// Creates a new inventory menu from a chest with option for showing the color picker.
         public static ItemGrabMenu GetNewItemGrabMenuFromChest(Chest chest, bool showColorPicker)
         {
-            var igm = new ItemGrabMenu((IList<Item>)chest.items, false, true, new
+            var igm = new ItemGrabMenu((IList<Item>)chest.Items, false, true, new
                     InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
                     new ItemGrabMenu.behaviorOnItemSelect(chest.grabItemFromInventory), (string)null,
                     new ItemGrabMenu.behaviorOnItemSelect(chest.grabItemFromChest), false, true, true, true, true, 1,
@@ -134,7 +136,7 @@ namespace ExpandedFridge
             if (igm.chestColorPicker != null)
             {
                 var r = igm.colorPickerToggleButton.bounds;
-                r.Y -= 128+32;
+                r.Y -= 128 + 32;
                 igm.colorPickerToggleButton.bounds = r;
                 igm.chestColorPicker.itemToDrawColored = null;
             }
@@ -176,9 +178,10 @@ namespace ExpandedFridge
 
                     while (h.objects.ContainsKey(newPosition))
                         newPosition.X = ++x;
-                    
+
                     StardewValley.Object obj = h.objects[oldPosition];
-                    obj.tileLocation.Value = newPosition;
+                    //obj.tileLocation.Value = newPosition;
+                    obj.TileLocation = newPosition;
                     h.objects.Remove(oldPosition);
                     h.objects.Add(newPosition, obj);
                 }
@@ -212,9 +215,10 @@ namespace ExpandedFridge
                 {
                     Vector2 oldPosition = new Vector2(v.X, v.Y);
                     Vector2 newPosition = GetFreeTileVectorInLocation(h);
-                    
+
                     StardewValley.Object obj = h.objects[oldPosition];
-                    obj.tileLocation.Value = newPosition;
+                    //obj.tileLocation.Value = newPosition;
+                    obj.TileLocation = newPosition;
                     h.objects.Remove(oldPosition);
                     h.objects.Add(newPosition, obj);
                 }
