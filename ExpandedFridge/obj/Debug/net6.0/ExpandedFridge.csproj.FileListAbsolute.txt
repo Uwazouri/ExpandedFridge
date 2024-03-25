@@ -1,0 +1,8 @@
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\obj\Debug\net6.0\ExpandedFridge.csproj.AssemblyReference.cache
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\obj\Debug\net6.0\ExpandedFridge.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\obj\Debug\net6.0\ExpandedFridge.AssemblyInfoInputs.cache
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\obj\Debug\net6.0\ExpandedFridge.AssemblyInfo.cs
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\obj\Debug\net6.0\ExpandedFridge.csproj.CoreCompileInputs.cache
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\bin\Debug\net6.0\ExpandedFridge.deps.json
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\bin\Debug\net6.0\ExpandedFridge.dll
+C:\Users\jsl_s\Desktop\ExpandedFridge2\ExpandedFridge\ExpandedFridge\obj\Debug\net6.0\ExpandedFridge.dll

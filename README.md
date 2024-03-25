@@ -1,10 +1,25 @@
+# Description
+This is a simple update to the [Expanded Fridge](https://www.nexusmods.com/stardewvalley/mods/1191) mod, to make it compatible with the recent Stardew Valley 1.6 update.  
+Additionally, a long-standing visual bug, that made it hard to click the fridge tabs on non-default zoom/UI scale levels, has been fixed.  
+The mod was *not* rewritten from scratch, changes to the code were as minimal as necessary for successful compilation.
+
+
+
+# Requirements
+SMAPI 4.0.0+  
+Stardew Valley 1.6+
+
+# Change log
+Unofficial.1 - Fixed visual bugs  
+Unofficial.2 - Updated code to work in SV 1.6
+
+----------------------------------
+----------------------------------
+(Original readMe below)
+
+
 # Managing Mini Fridges
 Access mini fridges through the kitchen fridge using inventory tabs. Simply place mini fridges in a farm house or cabin with a kitchen and they will be accessible from the kitchen fridge. The next day you will find your placed mini fridges moved away from your living space. They are placed in the first found free tiles within the house when the day ends so if the mod stops working you should still have your stuff. It should also work in multiplayer.
-
-
-# Requirements:
-SMAPI 3.1+
-Stardew Valley 1.4+
 
 # In-Game Instructions:
 Place mini fridges inside a farm house or cabin with a kitchen.
@@ -26,19 +41,19 @@ Done!
 
 
 # Change log:
-3.0.0 ﻿- Mini Fridge Update (rework of entire mod).
-2.0.3 ﻿- Changed from day to save events in fridge manipulation. Hopefully solves problems with Save Anywhere.
-2.0.2 ﻿- Added null check in mutex update and new button placement for remote fridge button.
-2.0.1 ﻿- Added option to toggle remote button in the fridge upgrade menu.
-2.0.0 ﻿- Complete rework of entire mod.
-1.2.8 ﻿- Changed settings for choosing fridge version to SMAPI friendly.
-1.2.7 ﻿- Updated SMAPI code and added shift + right-click to transfer half stack.
-1.2.6 ﻿- Fixed bug on mac with new settings file not being read.
-1.2.5 ﻿- Escape key can be used to close the fridge and new system for choosing fridge version.
-1.2.4 ﻿- Extra, Added Extra Large Fridge version.
-1.2.4 ﻿- Added simple support for navigating the menu with a controller.
-1.2.3 ﻿- Added an option for a scrolling menu.
-1.2.2 ﻿- Fixed bug where fridge would not work if it was empty.
-1.2.1 ﻿- Clicking and opening/closing now has sounds.
-1.2.0 ﻿- Reworked menu manipulation. Should be more stable and work better with Chests Anywhere.
-1.1.0  ﻿- Right clicking now works.
+3.0.0 ﻿- Mini Fridge Update (rework of entire mod).  
+2.0.3 ﻿- Changed from day to save events in fridge manipulation. Hopefully solves problems with Save Anywhere.  
+2.0.2 ﻿- Added null check in mutex update and new button placement for remote fridge button.  
+2.0.1 ﻿- Added option to toggle remote button in the fridge upgrade menu.  
+2.0.0 ﻿- Complete rework of entire mod.  
+1.2.8 ﻿- Changed settings for choosing fridge version to SMAPI friendly.  
+1.2.7 ﻿- Updated SMAPI code and added shift + right-click to transfer half stack.  
+1.2.6 ﻿- Fixed bug on mac with new settings file not being read.  
+1.2.5 ﻿- Escape key can be used to close the fridge and new system for choosing fridge version.  
+1.2.4 ﻿- Extra, Added Extra Large Fridge version.  
+1.2.4 ﻿- Added simple support for navigating the menu with a controller.  
+1.2.3 ﻿- Added an option for a scrolling menu.  
+1.2.2 ﻿- Fixed bug where fridge would not work if it was empty.  
+1.2.1 ﻿- Clicking and opening/closing now has sounds.  
+1.2.0 ﻿- Reworked menu manipulation. Should be more stable and work better with Chests Anywhere.  
+1.1.0  ﻿- Right clicking now works.  

@@ -6,7 +6,8 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewValley.Network;
+//using StardewValley.Network;
+using Netcode;
 using StardewValley.Locations;
 
 using Microsoft.Xna.Framework;
@@ -48,7 +49,7 @@ namespace ExpandedFridge
             // if fridge menu before, also accept any mini fridge as fridge menu 
             bool fridgeMenuLast = _inFridgeMenu;
             _inFridgeMenu = !fridgeMenuLast ? IsMenuOfCurrentFridge(e.NewMenu) : IsMenuOfCurrentFridges(e.NewMenu);
-                
+
             // invoke methods as needed
             if (fridgeMenuLast && _inFridgeMenu)
                 OnFridgeUpdated(e.NewMenu as ItemGrabMenu);
@@ -66,7 +67,7 @@ namespace ExpandedFridge
                 Utilities.MoveMiniFridgesOutOfMapBounds();
             }
         }
-        
+
         /// Move mini fridges into reach if option and master game.
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
@@ -103,7 +104,7 @@ namespace ExpandedFridge
 
         /// Cached bool for tracking initiation of custom menu.
         private bool _customMenuInitiated = false;
-        
+
         /// The menu displaying the custom fridge inventory behaviour.
         private ItemGrabMenu _menu = null;
 
@@ -126,7 +127,7 @@ namespace ExpandedFridge
                 // release mutex if mini fridge selected
                 if (_selectedTab > 0 && _selectedTab < _fridges.Count)
                     _fridges[_selectedTab].mutex.ReleaseLock();
-                
+
                 _menu = null;
                 _fridges.Clear();
                 ClearCustomComponents();
@@ -141,9 +142,9 @@ namespace ExpandedFridge
             // get multimutex from mini friges
             var farmHouse = Utilities.CurrentLocation as FarmHouse;
             var miniFridges = Utilities.GetAllMiniFridgesInLocation(farmHouse);
-            
+
             _menu = menu;
-            _fridges.Add(farmHouse.fridge);
+            _fridges.Add(farmHouse.fridge.Get());
             _fridges.AddRange(miniFridges);
             _entry.Helper.Events.Display.RenderingActiveMenu += DrawBeforeActiveMenu;
             _entry.Helper.Events.Input.ButtonPressed += RecieveButtonPressed;
@@ -162,7 +163,7 @@ namespace ExpandedFridge
         private List<ClickableComponent> _fridgeTabs = new List<ClickableComponent>();
 
         /// Colors for inventory tabs.
-        private List<Color> _fridgeTabsColors = new List<Color>();
+        private List<NetColor> _fridgeTabsColors = new List<NetColor>();
 
         /// Overflow arrow for scrolling next.
         private ClickableTextureComponent _rightArrowButton;
@@ -218,7 +219,7 @@ namespace ExpandedFridge
             _rootTab = 0;
             _updateTabColors = false;
         }
-        
+
         /// Switch leftmost fridge tab to the right.
         private void NextRootTab()
         {
@@ -301,7 +302,7 @@ namespace ExpandedFridge
             // never allow an ItemGrabMenu to render its background while we are drawing FridgeMenu, it will do it instead.
             if (igm != null && igm.drawBG)
                 igm.drawBG = false;
-            e.SpriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f);
+            e.SpriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
 
             // if flagged, update tabs colors
             if (_updateTabColors)
@@ -324,7 +325,7 @@ namespace ExpandedFridge
                 int xpos = tab.bounds.X - (_rootTab * Game1.tileSize);
 
                 IClickableMenu.drawTextureBox(e.SpriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), xpos, tab.bounds.Y, tab.bounds.Width, tab.bounds.Height, _selectedTab == index ? Color.White : new Color(0.3f, 0.3f, 0.3f, 1f), 1, false);
-                Color tabCol = index == 0 ? Color.BurlyWood : _fridgeTabsColors[index] == Color.Black ? Color.BurlyWood : _fridgeTabsColors[index];
+                Color tabCol = index == 0 ? Color.BurlyWood : _fridgeTabsColors[index].Value == Color.Black ? Color.BurlyWood : _fridgeTabsColors[index].Value;
                 e.SpriteBatch.Draw(Game1.staminaRect, new Rectangle(xpos + colorOffsetX, tab.bounds.Y + colorOffsetY, (int)(tab.bounds.Width * colorSizeModX), (int)(tab.bounds.Height * colorSizeModY)), tabCol);
                 if (index == 0)
                 {
@@ -361,7 +362,7 @@ namespace ExpandedFridge
         {
             if (e.Button == SButton.MouseLeft)
             {
-                Point mouse = new Point(Game1.getMouseX(), Game1.getMouseY());
+                Point mouse = new Point(Game1.getMouseX(true), Game1.getMouseY(true));
 
                 int i = 1;
                 for (int index = _rootTab; index < _fridgeTabs.Count && i++ <= 12; index++)

@@ -13,7 +13,7 @@ namespace ExpandedFridge
 
         /// Instance for static logging.
         private static ModEntry _instance = null;
-        
+
         /// Mod options instance.
         public ModConfig Config { get; private set; }
 
@@ -25,7 +25,7 @@ namespace ExpandedFridge
         {
             _instance = this;
             _instanceInitiated = true;
-            
+
             Config = helper.ReadConfig<ModConfig>();
             Manager = new Manager(this);
         }
